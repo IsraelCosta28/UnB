@@ -8,7 +8,7 @@ from telegram import Bot
 # CONFIGURAÇÕES DO MONITOR
 # ==============================================================================
 TELEGRAM_TOKEN = "8840915052:AAHPrjICol3JAKf_u9MdZ6-W4VYpi214soY"
-CHAT_ID = "5422544561"  # Cole seu Chat ID aqui entre as aspas
+CHAT_ID = "5422544561"  # Chat ID
 
 NOME_DEPTO = "CAMPUS UNB GAMA: FACULDADE DE CIÊNCIAS E TECNOLOGIAS EM ENGENHARIA - BRASÍLIA"  # Nome exato da unidade no menu do SIGAA
 CODIGO_DISCIPLINA = "FGA0142"
@@ -49,7 +49,7 @@ async def consultar_sigaa_playwright(p):
         # 1. Seleciona Nível (Graduação)
         await page.select_option("select[name*='inputNivel']", value="G")
 
-        # 2. ESPERA INTELIGENTE: Aguarda o select de departamento ser habilitado/populado pelo AJAX da UnB
+        # 2. Aguarda o select de departamento ser habilitado/populado pelo AJAX da UnB
         await page.wait_for_function(
             "() => document.querySelector(\"select[name*='inputDepto']\").options.length > 1",
             timeout=10000
@@ -70,7 +70,7 @@ async def consultar_sigaa_playwright(p):
         # 4. Clica em Buscar
         await page.click("input[value='Buscar']")
 
-        # 5. ESPERA CRUCIAL: Aguarda a tabela de resultados aparecer E ter conteúdo de fato dentro dela
+        # 5. Aguarda a tabela de resultados aparecer E ter conteúdo de fato dentro dela
         await page.wait_for_selector("table.listagem tr", timeout=45000)
 
         # Pausa extra de segurança para carregar todas as linhas da tabela
@@ -118,7 +118,6 @@ def processar_turmas_fga0142(html_content):
                 horario = tds[3].text.strip()
 
                 try:
-                    # Extrai apenas os dígitos numéricos de cada coluna para evitar erros de caracteres invisíveis
                     txt_ofertadas = "".join(filter(str.isdigit, tds[5].text))
                     txt_ocupadas = "".join(filter(str.isdigit, tds[6].text))
 
